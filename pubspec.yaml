@@ -8,28 +8,56 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+
+  #networking
   dio: ^4.0.6
+
+  #sdk
   flutter:
     sdk: flutter
+
+  #state management  
   flutter_riverpod: ^2.1.1
+
+  #utils
   nb_utils: ^5.0.5
+  flutter_svg: ^2.0.1
+  cached_network_image: ^3.2.3
+  youtube_player_flutter: ^8.1.2
+  
+  #storage
+  shared_preferences: ^2.0.17
+  flutter_cache_manager: ^3.3.0
+
+
 
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.11.0
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/app_icon.jpg"
+
 
 flutter:
   uses-material-design: true
   ## HOW TO ADD ASSETS
-  # assets:
-  #   - lib/core/assets/svg/map/bin-map-bad.svg
+  assets:
+    - assets/images/
+    - assets/svgs/
+    - assets/
   ## HOME TO ADD FONTS
-  # fonts:
-  # - family: Oswald
-  #   fonts:
-  #     - asset: lib/core/assets/fonts/Oswald/Oswald-ExtraLight.ttf
-  #       weight: 200
+  fonts:
+  - family: Poppins
+    fonts:
+      - asset: assets/fonts/Poppins-Regular.ttf
+  - family: PoppinsBold
+    fonts:
+      - asset: assets/fonts/Poppins-Bold.ttf    
+
   #     - asset: lib/core/assets/fonts/Oswald/Oswald-Light.ttf
   #       weight: 300
   #     - asset: lib/core/assets/fonts/Oswald/Oswald-Regular.ttf

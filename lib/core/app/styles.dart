@@ -1,21 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:movie_cow/core/app/colors.dart';
+import 'package:movie_cow/core/app/texts.dart';
 
 /// All styles used for widgets go here
 class AppStyles {
   AppStyles._();
 
-  /// example-textstyle
-  static TextStyle exampleTextstyle = const TextStyle(
-    color: AppColors.exampleColor,
-    fontWeight: FontWeight.w300,
+  /// watch-appBar-textstyle
+  static TextStyle watchAppBarTextstyle = const TextStyle(
+    color: AppColors.blueGreyColor,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppTexts.appFont,
     fontSize: 16.0,
   );
+  static TextStyle watchAppBarTextstyleWhite = const TextStyle(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppTexts.appFont,
+    fontSize: 16.0,
+  );
+  static TextStyle watchMovieNameTextstyle = const TextStyle(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppTexts.appFont,
+    fontSize: 18.0,
+  );
 
-  /// example-textstyle-2
-  static TextStyle exampleTextstyle2 = TextStyle(
-    color: AppColors.exampleColorSwatch.shade400,
-    fontWeight: FontWeight.w300,
-    fontSize: 20.0,
+  //movie-detail-styles
+  static TextStyle movieDetailTheatreTextstyle = const TextStyle(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppTexts.appFont,
+    fontSize: 16.0,
+  );
+  static TextStyle movieDetailTicketsTextstyle = const TextStyle(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppTexts.appFont,
+    fontSize: 14.0,
+  );
+  static TextStyle movieDetailTrailerTextstyle = const TextStyle(
+    color: AppColors.whiteColor,
+    fontWeight: FontWeight.bold,
+    fontFamily: AppTexts.appFont,
+    fontSize: 14.0,
   );
 }

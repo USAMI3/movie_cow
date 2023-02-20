@@ -4,21 +4,14 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  /// example-color-swatch
-  static const MaterialColor exampleColorSwatch = MaterialColor(0xFF53565A, <int, Color>{
-    50: Color(0xFFEAEBEB),
-    100: Color(0xFFCBCCCE),
-    200: Color(0xFFA9ABAD),
-    300: Color(0xFF87898C),
-    400: Color(0xFF6D6F73),
-    500: Color(0xFF53565A),
-    600: Color(0xFF4C4F52),
-    700: Color(0xFF424548),
-    800: Color(0xFF393C3F),
-    900: Color(0xFF292B2E),
-  });
-
-
-  /// example-color
-  static const Color exampleColor = Color(0xFF15A7E8);
+  /// primary-colors
+  static const Color purpleColor = Color(0xFF2E2739);
+  static const Color whiteColor = Color(0xFFF6F6FA);
+  static const Color greyColor = Color(0xFF827D88);
+  static const Color lightColor = Color(0xFF61C3F2);
+  static const Color cyanColor = Color(0xFF15D2BC);
+  static const Color pinkColor = Color(0xFFE26CA5);
+  static const Color lightPurpleColor = Color(0xFF564CA3);
+  static const Color yellowColor = Color(0xFFCD9D0F);
+  static const Color blueGreyColor = Color(0xFF202C43);
 }

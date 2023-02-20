@@ -22,7 +22,7 @@ class AppUtils {
       behavior: SnackBarBehavior.floating,
       action: SnackBarAction(
         label: 'OK',
-        textColor: AppColors.exampleColor,
+        textColor: AppColors.purpleColor,
         onPressed: () {
           if (widgetState.mounted) {
             if (onClosed == null) {

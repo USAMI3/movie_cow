@@ -19,7 +19,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Sample Project',
+      title: 'Movie Cow',
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       // Update app theme data here
@@ -27,7 +27,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: Routes.routes,
-      initialRoute: '/login',
+      initialRoute: '/home',
     );
   }
 }

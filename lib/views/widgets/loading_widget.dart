@@ -92,6 +92,6 @@ class LoaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const LoadingDots(color: AppColors.exampleColor);
+    return const LoadingDots(color: AppColors.purpleColor);
   }
 }

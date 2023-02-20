@@ -2,6 +2,9 @@
 class AppSvg {
   AppSvg._();
 
-  /// example-svg
-  static const String exampleSvg = 'lib/core/assets/svg/examples/example-svg.svg';
+  /// app-svgs
+  static const String dashboardSvg = 'assets/svgs/dashboard.svg';
+  static const String watchSvg = 'assets/svgs/watch.svg';
+  static const String mediaLibrarySvg = 'assets/svgs/media_library.svg';
+  static const String moreSvg = 'assets/svgs/more.svg';
 }
