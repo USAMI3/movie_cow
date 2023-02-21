@@ -1,3 +1,5 @@
+// ignore_for_file: always_specify_types
+
 import 'dart:convert';
 
 import 'package:movie_cow/core/services/api/endpoints.dart';
@@ -15,7 +17,7 @@ class ApiRequests {
       return MovieModel.fromJson(json.decode(moviesData));
     } else {
       try {
-        print("i was called");
+        print('i was called');
         const String url = Endpoints.baseUrl + Endpoints.getMovies;
         print(url);
         final Map<String, String> queryParameters = {
@@ -40,26 +42,34 @@ class ApiRequests {
 
   //get trailer url
   Future<String> getMovieTrailerUrl(int movieId) async {
-    final dio = Dio();
-    final response = await dio.get(
-        'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=${Endpoints.apiKey}&language=en-US');
-    final results = response.data['results'];
-    if (results != null && results.isNotEmpty) {
-      final trailer = results.firstWhere(
-          (result) => result['type'] == 'Trailer',
-          orElse: () => results.first);
-      final key = trailer['key'];
-      print('https://www.youtube.com/watch?v=$key');
-      return 'https://www.youtube.com/watch?v=$key';
-    } else {
+    try {
+      final Dio dio = Dio();
+      final Response response = await dio.get(
+          'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=${Endpoints.apiKey}&language=en-US');
+      final results = response.data['results'];
+      if (results != null && results.isNotEmpty) {
+        final trailer = results.firstWhere(
+            (result) => result['type'] == 'Trailer',
+            orElse: () => results.first);
+        final key = trailer['key'];
+        print('https://www.youtube.com/watch?v=$key');
+        return 'https://www.youtube.com/watch?v=$key';
+      } else {
+        return '';
+      }
+    } on DioError catch (e) {
+      print('Error getting movie trailer URL: ${e.message}');
+      return '';
+    } catch (e) {
+      print('Error getting movie trailer URL: $e');
       return '';
     }
   }
 
   //get genres
   Future<Map<int, String>> fetchGenres() async {
-    final dio = Dio();
-    final response = await dio.get(
+    final Dio dio = Dio();
+    final Response response = await dio.get(
         'https://api.themoviedb.org/3/genre/movie/list',
         queryParameters: {'api_key': Endpoints.apiKey});
     if (response.statusCode == 200) {

@@ -1,5 +1,6 @@
+// ignore_for_file: always_specify_types
+
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
 import 'package:movie_cow/core/app/colors.dart';
 import 'package:movie_cow/core/app/texts.dart';
 import 'package:movie_cow/core/services/api/api_services.dart';
@@ -10,18 +11,22 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class VideoPlayerScreen extends StatelessWidget {
   final int movieId;
 
-  VideoPlayerScreen({Key? key, required this.movieId}) : super(key: key);
+  VideoPlayerScreen({
+    required this.movieId,
+    Key? key,
+  }) : super(key: key);
 
-  final apiRequests = ApiRequests();
+  final ApiRequests apiRequests = ApiRequests();
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
+    final Orientation orientation = MediaQuery.of(context).orientation;
     return FutureBuilder<String>(
       future: apiRequests.getMovieTrailerUrl(movieId),
-      builder: (context, snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
         if (snapshot.hasData) {
-          final videoId = YoutubePlayer.convertUrlToId(snapshot.data!);
+          final String? videoId = YoutubePlayer.convertUrlToId(snapshot.data!);
 
           return Scaffold(
             backgroundColor: AppColors.blueGreyColor,
@@ -32,7 +37,7 @@ class VideoPlayerScreen extends StatelessWidget {
                   children: [
                     YoutubePlayer(
                       aspectRatio: 16 / 10,
-                      onEnded: (metaData) {
+                      onEnded: (YoutubeMetaData metaData) {
                         finish(context);
                       },
                       controller: YoutubePlayerController(
@@ -47,8 +52,12 @@ class VideoPlayerScreen extends StatelessWidget {
                         finish(context);
                       },
                       child: Container(
-                        width: size.width * 0.5,
-                        height: size.height * 0.07,
+                        width: orientation == Orientation.portrait
+                            ? size.width * 0.5
+                            : size.width * 0.25,
+                        height: orientation == Orientation.portrait
+                            ? size.height * 0.07
+                            : size.height * 0.15,
                         decoration: BoxDecoration(
                           color: AppColors.yellowColor,
                           borderRadius: BorderRadius.circular(16),
@@ -64,6 +73,9 @@ class VideoPlayerScreen extends StatelessWidget {
                         )),
                       ),
                     ),
+                    SizedBox(
+                      height: size.height * 0.08,
+                    ),
                   ],
                 ),
               ),
@@ -74,7 +86,7 @@ class VideoPlayerScreen extends StatelessWidget {
             child: Text(snapshot.error.toString()),
           );
         } else {
-          return Center(
+          return const Center(
             child: LoaderWidget(),
           );
         }

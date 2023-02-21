@@ -61,4 +61,11 @@ class AppStyles {
     fontFamily: AppTexts.appFont,
     fontSize: 12.0,
   );
+
+  //searched-body styles
+  static TextStyle searchedBodyTextstyle = const TextStyle(
+    color: AppColors.blueGreyColor,
+    fontFamily: AppTexts.appFont,
+    fontSize: 13.0,
+  );
 }

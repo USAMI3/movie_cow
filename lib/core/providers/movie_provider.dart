@@ -1,3 +1,5 @@
+// ignore_for_file: always_specify_types, unused_field, prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +18,7 @@ class MovieProvider extends ChangeNotifier {
   bool get isSearching => _isSearching;
 
   void searchPrompt() {
-    print("I was clicked");
+    print('I was clicked');
     _isSearching = !_isSearching;
     notifyListeners();
     print(_isSearching);

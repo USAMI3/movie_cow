@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, always_specify_types
+
 import 'package:flutter/widgets.dart';
 import 'package:movie_cow/core/app/colors.dart';
 

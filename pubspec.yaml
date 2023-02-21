@@ -32,6 +32,9 @@ dependencies:
   #internalization
   intl: ^0.17.0
 
+  #testing
+  mockito: ^5.3.2
+
 
 
 dev_dependencies:
@@ -61,13 +64,3 @@ flutter:
     fonts:
       - asset: assets/fonts/Poppins-Bold.ttf    
 
-  #     - asset: lib/core/assets/fonts/Oswald/Oswald-Light.ttf
-  #       weight: 300
-  #     - asset: lib/core/assets/fonts/Oswald/Oswald-Regular.ttf
-  #       weight: 400
-  #     - asset: lib/core/assets/fonts/Oswald/Oswald-Medium.ttf
-  #       weight: 500
-  #     - asset: lib/core/assets/fonts/Oswald/Oswald-SemiBold.ttf
-  #       weight: 600
-  #     - asset: lib/core/assets/fonts/Oswald/Oswald-Bold.ttf
-  #       weight: 700

@@ -2,6 +2,8 @@
 //
 //     final movieModel = movieModelFromJson(jsonString);
 
+// ignore_for_file: always_specify_types
+
 import 'dart:convert';
 
 MovieModel movieModelFromJson(String str) =>
@@ -36,7 +38,7 @@ class MovieModel {
   Map<String, dynamic> toJson() => {
         'dates': dates.toJson(),
         'page': page,
-        'results': List<dynamic>.from(results.map((x) => x.toJson())),
+        'results': List<dynamic>.from(results.map((Result x) => x.toJson())),
         'total_pages': totalPages,
         'total_results': totalResults,
       };
@@ -117,7 +119,7 @@ class Result {
   Map<String, dynamic> toJson() => {
         'adult': adult,
         'backdrop_path': backdropPath,
-        'genre_ids': List<dynamic>.from(genreIds.map((x) => x)),
+        'genre_ids': List<dynamic>.from(genreIds.map((int x) => x)),
         'id': id,
         'original_language': originalLanguage,
         'original_title': originalTitle,
@@ -140,7 +142,7 @@ class EnumValues<T> {
   EnumValues(this.map);
 
   Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
+    reverseMap = map.map((String k, v) => MapEntry(v, k));
     return reverseMap;
   }
 }

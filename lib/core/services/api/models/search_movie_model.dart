@@ -2,6 +2,8 @@
 //
 //     final searchMovieModel = searchMovieModelFromJson(jsonString);
 
+// ignore_for_file: always_specify_types
+
 import 'dart:convert';
 
 SearchMovieModel searchMovieModelFromJson(String str) =>
@@ -34,7 +36,8 @@ class SearchMovieModel {
 
   Map<String, dynamic> toJson() => {
         'page': page,
-        'results': List<dynamic>.from(results.map((x) => x.toJson())),
+        'results':
+            List<dynamic>.from(results.map((SearchResult x) => x.toJson())),
         'total_pages': totalPages,
         'total_results': totalResults,
       };
@@ -43,7 +46,6 @@ class SearchMovieModel {
 class SearchResult {
   SearchResult({
     required this.adult,
-    this.backdropPath,
     required this.genreIds,
     required this.id,
     required this.originalLanguage,
@@ -56,6 +58,7 @@ class SearchResult {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    this.backdropPath,
   });
 
   bool adult;
@@ -93,7 +96,7 @@ class SearchResult {
   Map<String, dynamic> toJson() => {
         'adult': adult,
         'backdrop_path': backdropPath,
-        'genre_ids': List<dynamic>.from(genreIds.map((x) => x)),
+        'genre_ids': List<dynamic>.from(genreIds.map((int x) => x)),
         'id': id,
         'original_language': originalLanguage,
         'original_title': originalTitle,
