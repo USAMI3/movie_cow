@@ -8,9 +8,13 @@ import 'package:movie_cow/core/app/texts.dart';
 import 'package:movie_cow/core/providers/movie_provider.dart';
 import 'package:movie_cow/core/services/api/api_services.dart';
 import 'package:movie_cow/core/services/api/models/movie_model.dart';
+import 'package:movie_cow/core/services/api/models/search_movie_model.dart';
 import 'package:movie_cow/views/sub_fragments/movie_detail.dart';
+import 'package:movie_cow/views/sub_fragments/searched_movie_detail.dart';
 import 'package:movie_cow/views/widgets/loading_widget.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../../core/providers/search_provider.dart';
 
 class WatchFragment extends ConsumerStatefulWidget {
   const WatchFragment({super.key});
@@ -21,6 +25,7 @@ class WatchFragment extends ConsumerStatefulWidget {
 
 class _WatchFragmentState extends ConsumerState<WatchFragment> {
   final ApiRequests apiRequests = ApiRequests();
+  final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -32,6 +37,10 @@ class _WatchFragmentState extends ConsumerState<WatchFragment> {
                 backgroundColor: AppColors.whiteColor,
                 elevation: 0,
                 title: TextField(
+                  controller: _searchController,
+                  onChanged: (String value) {
+                    ref.read(searchmovieProvider).query = value;
+                  },
                   decoration: InputDecoration(
                     prefixIcon: Icon(
                       Icons.search,
@@ -85,195 +94,166 @@ class _WatchFragmentState extends ConsumerState<WatchFragment> {
                   )
                 ],
               ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FutureBuilder<MovieModel>(
-              future: apiRequests.getUpcomingMovies(),
-              builder:
-                  (BuildContext context, AsyncSnapshot<MovieModel> snapshot) {
-                if (snapshot.hasData) {
-                  final MovieModel? data = snapshot.data;
-                  return Flexible(
+        body: ref.watch(movieProvider).isSearching == true
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (ref.watch(searchmovieProvider).movies.isEmpty) ...[
+                    Center(
+                        child: Text(
+                      "No results found",
+                      style: TextStyle(
+                        color: AppColors.purpleColor,
+                        fontFamily: AppTexts.boldAppFont,
+                        fontSize: 16,
+                      ),
+                    )),
+                  ],
+                  Flexible(
                     fit: FlexFit.loose,
-                    child: CustomScrollView(
-                      slivers: [
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              return Column(
-                                children: <Widget>[
-                                  index == 0
-                                      ? SizedBox(
-                                          height: size.height * 0.04,
-                                        )
-                                      : const SizedBox(),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: size.width * 0.05),
-                                    child: InkWell(
-                                      onTap: () {
-                                        MovieDetail(data.results[index])
-                                            .launch(context);
-                                      },
-                                      child: Container(
-                                        width:
-                                            orientation == Orientation.portrait
-                                                ? size.width
-                                                : size.width * 0.7,
-                                        height:
-                                            orientation == Orientation.portrait
-                                                ? size.height * 0.25
-                                                : size.height * 0.5,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.purpleColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          image: DecorationImage(
-                                            fit: BoxFit.fill,
-                                            image: CachedNetworkImageProvider(
-                                              'https://image.tmdb.org/t/p/original${data.results[index].posterPath}',
-                                              cacheManager:
-                                                  DefaultCacheManager(),
-                                            ),
-                                          ),
-                                        ),
-                                        child: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      const BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(10),
-                                                    bottomRight:
-                                                        Radius.circular(10),
-                                                  ),
-                                                  gradient: LinearGradient(
-                                                    begin:
-                                                        Alignment.bottomCenter,
-                                                    end: Alignment.topCenter,
-                                                    colors: [
-                                                      Colors.black
-                                                          .withOpacity(0.7),
-                                                      Colors.transparent,
-                                                    ],
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: ref.read(searchmovieProvider).movies.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final SearchResult movie =
+                            ref.watch(searchmovieProvider).movies[index];
+                        return ListTile(
+                          onTap: () {
+                            FocusScope.of(context).unfocus();
+                            SearchedMovieDetail(movie).launch(context);
+                          },
+                          leading: Image.network(
+                            'https://image.tmdb.org/t/p/w92${movie.posterPath}',
+                          ),
+                          title: Text(movie.title),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FutureBuilder<MovieModel>(
+                    future: apiRequests.getUpcomingMovies(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<MovieModel> snapshot) {
+                      if (snapshot.hasData) {
+                        final MovieModel? data = snapshot.data;
+                        return Flexible(
+                          fit: FlexFit.loose,
+                          child: CustomScrollView(
+                            slivers: [
+                              SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                                  (BuildContext context, int index) {
+                                    return Column(
+                                      children: <Widget>[
+                                        index == 0
+                                            ? SizedBox(
+                                                height: size.height * 0.04,
+                                              )
+                                            : const SizedBox(),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: size.width * 0.05),
+                                          child: InkWell(
+                                            onTap: () {
+                                              MovieDetail(data.results[index])
+                                                  .launch(context);
+                                            },
+                                            child: Container(
+                                              width: orientation ==
+                                                      Orientation.portrait
+                                                  ? size.width
+                                                  : size.width * 0.7,
+                                              height: orientation ==
+                                                      Orientation.portrait
+                                                  ? size.height * 0.25
+                                                  : size.height * 0.5,
+                                              decoration: BoxDecoration(
+                                                color: AppColors.purpleColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                image: DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image:
+                                                      CachedNetworkImageProvider(
+                                                    'https://image.tmdb.org/t/p/original${data.results[index].posterPath}',
+                                                    cacheManager:
+                                                        DefaultCacheManager(),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Align(
-                                                alignment: Alignment.bottomLeft,
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  child: Text(
-                                                    data.results[index].title,
-                                                    style: AppStyles
-                                                        .watchMovieNameTextstyle,
+                                              child: Stack(
+                                                children: [
+                                                  Positioned.fill(
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  10),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  10),
+                                                        ),
+                                                        gradient:
+                                                            LinearGradient(
+                                                          begin: Alignment
+                                                              .bottomCenter,
+                                                          end: Alignment
+                                                              .topCenter,
+                                                          colors: [
+                                                            Colors.black
+                                                                .withOpacity(
+                                                                    0.7),
+                                                            Colors.transparent,
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                )),
-                                          ],
+                                                  Align(
+                                                      alignment:
+                                                          Alignment.bottomLeft,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(16.0),
+                                                        child: Text(
+                                                          data.results[index]
+                                                              .title,
+                                                          style: AppStyles
+                                                              .watchMovieNameTextstyle,
+                                                        ),
+                                                      )),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: size.height * 0.02,
-                                  ),
-                                ],
-                              );
-                            },
-                            childCount: data!.results.length,
+                                        SizedBox(
+                                          height: size.height * 0.02,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  childCount: data!.results.length,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-
-                    // ListView.builder(
-                    //   itemCount: data!.results.length,
-                    //   shrinkWrap: true,
-                    //   physics: const BouncingScrollPhysics(),
-                    //   scrollDirection: Axis.vertical,
-                    //   itemBuilder: (BuildContext context, int index) {
-                    //     return
-                    //     Column(
-                    //       children: <Widget>[
-                    //         index == 0
-                    //             ? SizedBox(
-                    //                 height: size.height * 0.04,
-                    //               )
-                    //             : const SizedBox(),
-                    //         Padding(
-                    //           padding: EdgeInsets.symmetric(
-                    //               horizontal: size.width * 0.05),
-                    //           child: Container(
-                    //             width: orientation == Orientation.portrait
-                    //                 ? size.width
-                    //                 : size.width * 0.7,
-                    //             height: orientation == Orientation.portrait
-                    //                 ? size.height * 0.25
-                    //                 : size.height * 0.5,
-                    //             decoration: BoxDecoration(
-                    //               color: Colors.red,
-                    //               borderRadius: BorderRadius.circular(10),
-                    //               image: DecorationImage(
-                    //                 fit: BoxFit.fill,
-                    //                 image: CachedNetworkImageProvider(
-                    //                   'https://image.tmdb.org/t/p/original${data.results[index].posterPath}',
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //             child: Stack(
-                    //               children: [
-                    //                 Positioned.fill(
-                    //                   child: Container(
-                    //                     decoration: BoxDecoration(
-                    //                       borderRadius: const BorderRadius.only(
-                    //                         bottomLeft: Radius.circular(10),
-                    //                         bottomRight: Radius.circular(10),
-                    //                       ),
-                    //                       gradient: LinearGradient(
-                    //                         begin: Alignment.bottomCenter,
-                    //                         end: Alignment.topCenter,
-                    //                         colors: [
-                    //                           Colors.black.withOpacity(0.7),
-                    //                           Colors.transparent,
-                    //                         ],
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //                 Align(
-                    //                     alignment: Alignment.bottomLeft,
-                    //                     child: Padding(
-                    //                       padding: const EdgeInsets.all(16.0),
-                    //                       child: Text(
-                    //                         data.results[index].title,
-                    //                         style: AppStyles
-                    //                             .watchMovieNameTextstyle,
-                    //                       ),
-                    //                     )),
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         ),
-                    //         SizedBox(
-                    //           height: size.height * 0.02,
-                    //         ),
-                    //       ],
-                    //     );
-
-                    //   },
-                    // ),
-                  );
-                }
-                return const Center(child: LoaderWidget());
-              },
-            ),
-          ],
-        ),
+                        );
+                      }
+                      return const Center(child: LoaderWidget());
+                    },
+                  ),
+                ],
+              ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:movie_cow/core/app/colors.dart';
+import 'package:movie_cow/core/app/texts.dart';
 import 'package:movie_cow/core/services/api/api_services.dart';
 import 'package:movie_cow/views/widgets/loading_widget.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -15,6 +16,7 @@ class VideoPlayerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return FutureBuilder<String>(
       future: apiRequests.getMovieTrailerUrl(movieId),
       builder: (context, snapshot) {
@@ -24,32 +26,46 @@ class VideoPlayerScreen extends StatelessWidget {
           return Scaffold(
             backgroundColor: AppColors.blueGreyColor,
             body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  YoutubePlayer(
-                    aspectRatio: 16 / 16,
-                    controller: YoutubePlayerController(
-                      initialVideoId: videoId!,
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.04,
-                  ),
-                  InkWell(
-                    onTap: () {
-                      finish(context);
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.07,
-                      decoration: BoxDecoration(
-                        color: AppColors.yellowColor,
-                        borderRadius: BorderRadius.circular(16),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    YoutubePlayer(
+                      aspectRatio: 16 / 10,
+                      onEnded: (metaData) {
+                        finish(context);
+                      },
+                      controller: YoutubePlayerController(
+                        initialVideoId: videoId!,
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: size.height * 0.04,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        finish(context);
+                      },
+                      child: Container(
+                        width: size.width * 0.5,
+                        height: size.height * 0.07,
+                        decoration: BoxDecoration(
+                          color: AppColors.yellowColor,
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: const Center(
+                            child: Text(
+                          AppTexts.videoPlayerDone,
+                          style: TextStyle(
+                            color: AppColors.whiteColor,
+                            fontFamily: AppTexts.boldAppFont,
+                            fontSize: 16,
+                          ),
+                        )),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

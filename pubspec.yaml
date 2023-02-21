@@ -29,6 +29,9 @@ dependencies:
   shared_preferences: ^2.0.17
   flutter_cache_manager: ^3.3.0
 
+  #internalization
+  intl: ^0.17.0
+
 
 
 dev_dependencies:

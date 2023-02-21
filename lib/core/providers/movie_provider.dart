@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 final ChangeNotifierProvider<MovieProvider> movieProvider =
     ChangeNotifierProvider((ChangeNotifierProviderRef<MovieProvider> ref) {
@@ -19,5 +20,16 @@ class MovieProvider extends ChangeNotifier {
     _isSearching = !_isSearching;
     notifyListeners();
     print(_isSearching);
+  }
+
+  String formatDate(String dateStr) {
+    // Parse the input date string into a DateTime object
+    DateTime date = DateTime.parse(dateStr);
+    // Define the desired output format
+    final DateFormat formatter = DateFormat('MMMM dd, yyyy');
+    // Format the date using the formatter
+    final String formattedDate = formatter.format(date);
+
+    return formattedDate;
   }
 }

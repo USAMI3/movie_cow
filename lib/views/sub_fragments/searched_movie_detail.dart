@@ -6,22 +6,23 @@ import 'package:movie_cow/core/app/colors.dart';
 import 'package:movie_cow/core/app/styles.dart';
 import 'package:movie_cow/core/app/texts.dart';
 import 'package:movie_cow/core/services/api/api_services.dart';
-import 'package:movie_cow/core/services/api/models/movie_model.dart';
+import 'package:movie_cow/core/services/api/models/search_movie_model.dart';
 import 'package:movie_cow/views/widgets/loading_widget.dart';
 import 'package:movie_cow/views/widgets/video_player.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../core/providers/movie_provider.dart';
 
-class MovieDetail extends ConsumerStatefulWidget {
-  final Result result;
-  const MovieDetail(this.result, {super.key});
+class SearchedMovieDetail extends ConsumerStatefulWidget {
+  final SearchResult result;
+  const SearchedMovieDetail(this.result, {super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MovieDetailState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _SearchedMovieDetailState();
 }
 
-class _MovieDetailState extends ConsumerState<MovieDetail> {
+class _SearchedMovieDetailState extends ConsumerState<SearchedMovieDetail> {
   final apiRequests = ApiRequests();
 
   final genreColorsList = <Color>[
@@ -104,6 +105,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                           ),
                           InkWell(
                             onTap: () {
+                              print(widget.result.id);
                               VideoPlayerScreen(
                                 movieId: widget.result.id,
                               ).launch(context);
@@ -179,7 +181,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                      top: size.height * 0.42,
+                      top: size.height * 0.45,
                       left: size.width * 0.06,
                     ),
                     child: Text(
@@ -188,7 +190,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     ),
                   ),
                   SizedBox(
-                    height: size.height * 0.02,
+                    height: size.height * 0.01,
                   ),
                   Flexible(
                     fit: FlexFit.loose,
@@ -255,7 +257,7 @@ class _MovieDetailState extends ConsumerState<MovieDetail> {
                     ),
                   ),
                   SizedBox(
-                    height: size.height * 0.02,
+                    height: size.height * 0.01,
                   ),
                   Padding(
                     padding: EdgeInsets.only(

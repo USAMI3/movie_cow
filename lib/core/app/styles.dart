@@ -45,4 +45,20 @@ class AppStyles {
     fontFamily: AppTexts.appFont,
     fontSize: 14.0,
   );
+
+  static TextStyle movieDetailGenreTextstyle = const TextStyle(
+    color: AppColors.blueGreyColor,
+    fontFamily: AppTexts.boldAppFont,
+    fontSize: 16.0,
+  );
+  static TextStyle movieDetailOverviewHeadingTextstyle = const TextStyle(
+    color: AppColors.blueGreyColor,
+    fontFamily: AppTexts.boldAppFont,
+    fontSize: 16.0,
+  );
+  static TextStyle movieDetailOverviewTextstyle = const TextStyle(
+    color: AppColors.greyColor,
+    fontFamily: AppTexts.appFont,
+    fontSize: 12.0,
+  );
 }

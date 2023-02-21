@@ -18,9 +18,8 @@ class ApiRequests {
         print("i was called");
         const String url = Endpoints.baseUrl + Endpoints.getMovies;
         print(url);
-        //for production purposes, use api_key more securely, i.e in .env file
         final Map<String, String> queryParameters = {
-          'api_key': '55d31ecf304933f3d06bf2ff11c2b947',
+          'api_key': Endpoints.apiKey,
         };
         return await Dio()
             .get(
@@ -43,7 +42,7 @@ class ApiRequests {
   Future<String> getMovieTrailerUrl(int movieId) async {
     final dio = Dio();
     final response = await dio.get(
-        'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=55d31ecf304933f3d06bf2ff11c2b947&language=en-US');
+        'https://api.themoviedb.org/3/movie/$movieId/videos?api_key=${Endpoints.apiKey}&language=en-US');
     final results = response.data['results'];
     if (results != null && results.isNotEmpty) {
       final trailer = results.firstWhere(
@@ -54,6 +53,24 @@ class ApiRequests {
       return 'https://www.youtube.com/watch?v=$key';
     } else {
       return '';
+    }
+  }
+
+  //get genres
+  Future<Map<int, String>> fetchGenres() async {
+    final dio = Dio();
+    final response = await dio.get(
+        'https://api.themoviedb.org/3/genre/movie/list',
+        queryParameters: {'api_key': Endpoints.apiKey});
+    if (response.statusCode == 200) {
+      final List<dynamic> genresJson = response.data['genres'];
+      final Map<int, String> genres = {};
+      for (var genre in genresJson) {
+        genres[genre['id']] = genre['name'];
+      }
+      return genres;
+    } else {
+      throw Exception('Failed to fetch genres');
     }
   }
 }
