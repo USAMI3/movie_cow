@@ -13,13 +13,11 @@ class ApiRequests {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? moviesData = prefs.getString('upcoming_movies');
     if (moviesData != null) {
-      print("I'm being called now");
       return MovieModel.fromJson(json.decode(moviesData));
     } else {
       try {
-        print('i was called');
         const String url = Endpoints.baseUrl + Endpoints.getMovies;
-        print(url);
+
         final Map<String, String> queryParameters = {
           'api_key': Endpoints.apiKey,
         };
@@ -29,7 +27,6 @@ class ApiRequests {
           queryParameters: queryParameters,
         )
             .then((Response value) {
-          print(value);
           prefs.setString('upcoming_movies', json.encode(value.data));
           return MovieModel.fromJson(value.data);
         });
@@ -52,7 +49,6 @@ class ApiRequests {
             (result) => result['type'] == 'Trailer',
             orElse: () => results.first);
         final key = trailer['key'];
-        print('https://www.youtube.com/watch?v=$key');
         return 'https://www.youtube.com/watch?v=$key';
       } else {
         return '';

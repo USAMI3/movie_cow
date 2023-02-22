@@ -6,8 +6,6 @@ import 'package:movie_cow/routes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initialize();
-  bool isNetwork = await isNetworkAvailable();
-  print(isNetwork);
   runApp(const ProviderScope(
     child: App(),
   ));

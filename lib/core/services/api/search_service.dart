@@ -11,7 +11,7 @@ class MovieService {
   Future<List<SearchResult>> searchMovies(String query) async {
     final String url =
         'https://api.themoviedb.org/3/search/movie?api_key=${Endpoints.apiKey}&query=$query&page=1&with_original_language=en';
-    print(url);
+
     try {
       final Response response = await _dio.get(url);
       final SearchMovieModel searchMovieModel =

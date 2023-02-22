@@ -18,10 +18,8 @@ class MovieProvider extends ChangeNotifier {
   bool get isSearching => _isSearching;
 
   void searchPrompt() {
-    print('I was clicked');
     _isSearching = !_isSearching;
     notifyListeners();
-    print(_isSearching);
   }
 
   String formatDate(String dateStr) {

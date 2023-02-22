@@ -43,7 +43,7 @@ class _WatchFragmentState extends ConsumerState<WatchFragment> {
                   autofocus: true,
                   onChanged: (String value) async {
                     bool isNetwork = await isNetworkAvailable();
-                    print(isNetwork);
+
                     if (isNetwork == true) {
                       ref.read(searchmovieProvider).query = value;
                     } else {

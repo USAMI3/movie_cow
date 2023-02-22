@@ -114,7 +114,7 @@ class _SearchedMovieDetailState extends ConsumerState<SearchedMovieDetail> {
                                 InkWell(
                                   onTap: () async {
                                     bool isNetwork = await isNetworkAvailable();
-                                    print(isNetwork);
+
                                     if (isNetwork == true) {
                                       VideoPlayerScreen(
                                         movieId: widget.result.id,
@@ -382,7 +382,7 @@ class _SearchedMovieDetailState extends ConsumerState<SearchedMovieDetail> {
                                 InkWell(
                                   onTap: () async {
                                     bool isNetwork = await isNetworkAvailable();
-                                    print(isNetwork);
+
                                     if (isNetwork == true) {
                                       VideoPlayerScreen(
                                         movieId: widget.result.id,
